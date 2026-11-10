@@ -1,0 +1,86 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) ||
+        request.auth.token.email == 'carolina.perez@iemanueljbetancur.edu.co'
+      );
+    }
+
+    // Product validation
+    function isValidProduct(data) {
+      return data.keys().hasAll(['id', 'name', 'price', 'stock', 'image', 'status']) &&
+        data.name is string && data.name.size() <= 128 &&
+        data.price is number && data.price >= 0 &&
+        data.stock is number && data.stock >= 0 &&
+        data.image is string && data.image.size() <= 1000 &&
+        data.status in ['Disponible', 'Últimas unidades', 'Agotado'];
+    }
+
+    // Order validation
+    function isValidOrder(data) {
+      return data.keys().hasAll(['id', 'orderNumber', 'customerName', 'customerPhone', 'city', 'deliveryAddress', 'total', 'status']) &&
+        data.customerName is string && data.customerName.size() <= 128 &&
+        data.customerPhone is string && data.customerPhone.size() <= 32 &&
+        data.city is string && data.city.size() <= 64 &&
+        data.deliveryAddress is string && data.deliveryAddress.size() <= 256 &&
+        data.total is number && data.total >= 0 &&
+        data.status in ['Pendiente', 'Confirmado', 'En preparación', 'Enviado', 'Entregado', 'Cancelado'];
+    }
+
+    // PRODUCTS: Public read (catalog & real-time stock), Admin write
+    match /products/{productId} {
+      allow read: if isValidId(productId);
+      allow create, update, delete: if isAdmin() && isValidId(productId) && isValidProduct(incoming());
+    }
+
+    // ORDERS: Anyone can create a valid order, Admin can read & update
+    match /orders/{orderId} {
+      allow create: if isValidId(orderId) && isValidOrder(incoming());
+      allow read, update, delete: if isAdmin() && isValidId(orderId);
+    }
+
+    // ROULETTE PRIZES: Public read active prizes, Admin can manage
+    match /roulette_prizes/{prizeId} {
+      allow read: if isValidId(prizeId);
+      allow write: if isAdmin() && isValidId(prizeId);
+    }
+
+    // ROULETTE PARTICIPATIONS: Public can record a spin, Admin can read/manage
+    match /roulette_participations/{participationId} {
+      allow create: if isValidId(participationId);
+      allow read, update, delete: if isAdmin() && isValidId(participationId);
+    }
+
+    // USERS: Only authenticated users reading their profile, Admins managing
+    match /users/{userId} {
+      allow read: if (isSignedIn() && request.auth.uid == userId) || isAdmin();
+      allow write: if isAdmin() && isValidId(userId);
+    }
+  }
+}

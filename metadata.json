@@ -1,0 +1,6 @@
+{
+  "name": "MIELE by lcm - Cremas Corporales Vintage",
+  "description": "Boutique botica y e-commerce de cremas corporales vintage MIELE by lcm, con catálogo botánico en tiempo real, inventario dinámico, compras directas y ruleta interactiva de premios.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

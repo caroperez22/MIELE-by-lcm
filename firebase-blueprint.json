@@ -1,0 +1,127 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "MIELE by lcm handcrafted luxury body butter catalog and inventory item.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 128 },
+        "tagline": { "type": "string", "maxLength": 200 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "price": { "type": "number" },
+        "stock": { "type": "number" },
+        "category": { "type": "string", "maxLength": 64 },
+        "image": { "type": "string", "maxLength": 1000 },
+        "size": { "type": "string", "maxLength": 32 },
+        "ingredients": { "type": "string", "maxLength": 1000 },
+        "benefits": { "type": "string", "maxLength": 1000 },
+        "scentNotes": { "type": "string", "maxLength": 200 },
+        "status": { "type": "string", "enum": ["Disponible", "Últimas unidades", "Agotado"] },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "price", "stock", "image", "status"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase order for MIELE by lcm products.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "orderNumber": { "type": "string", "maxLength": 32 },
+        "customerName": { "type": "string", "maxLength": 128 },
+        "customerPhone": { "type": "string", "maxLength": 32 },
+        "customerEmail": { "type": "string", "maxLength": 128 },
+        "city": { "type": "string", "maxLength": 64 },
+        "department": { "type": "string", "maxLength": 64 },
+        "deliveryAddress": { "type": "string", "maxLength": 256 },
+        "items": { "type": "string", "maxLength": 10000 },
+        "subtotal": { "type": "number" },
+        "discount": { "type": "number" },
+        "discountCode": { "type": "string", "maxLength": 32 },
+        "shippingCost": { "type": "number" },
+        "total": { "type": "number" },
+        "status": { "type": "string", "enum": ["Pendiente", "Confirmado", "En preparación", "Enviado", "Entregado", "Cancelado"] },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "orderNumber", "customerName", "customerPhone", "city", "deliveryAddress", "items", "total", "status"]
+    },
+    "RoulettePrize": {
+      "title": "RoulettePrize",
+      "description": "Configurable prize for the interactive MIELE promotional roulette.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "label": { "type": "string", "maxLength": 64 },
+        "type": { "type": "string", "enum": ["discount", "free_product", "free_shipping", "no_prize"] },
+        "discountPercent": { "type": "number" },
+        "productId": { "type": "string", "maxLength": 64 },
+        "color": { "type": "string", "maxLength": 16 },
+        "textColor": { "type": "string", "maxLength": 16 },
+        "probability": { "type": "number" },
+        "stock": { "type": "number" },
+        "claimedCount": { "type": "number" },
+        "active": { "type": "boolean" },
+        "message": { "type": "string", "maxLength": 256 }
+      },
+      "required": ["id", "label", "type", "probability", "active"]
+    },
+    "RouletteParticipation": {
+      "title": "RouletteParticipation",
+      "description": "Audit record of roulette spins, winning results and coupon redemption.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "customerIdentifier": { "type": "string", "maxLength": 128 },
+        "prizeId": { "type": "string", "maxLength": 64 },
+        "prizeLabel": { "type": "string", "maxLength": 64 },
+        "couponCode": { "type": "string", "maxLength": 32 },
+        "discountPercent": { "type": "number" },
+        "claimed": { "type": "boolean" },
+        "claimedAt": { "type": "string" },
+        "associatedOrderId": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "customerIdentifier", "prizeId", "prizeLabel", "createdAt"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Administrative user authorized to manage products, inventory and view orders.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 128 },
+        "role": { "type": "string", "enum": ["admin", "superadmin", "editor"] },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "role"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Public catalog products with real-time stock and prices."
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer purchase orders registered upon checkout."
+    },
+    "/roulette_prizes/{prizeId}": {
+      "schema": "RoulettePrize",
+      "description": "Promotional roulette configuration and probabilities."
+    },
+    "/roulette_participations/{participationId}": {
+      "schema": "RouletteParticipation",
+      "description": "Spins log with assigned coupon codes and status."
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Administrative staff authentication profiles."
+    }
+  }
+}
