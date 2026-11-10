@@ -135,6 +135,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onOpenCheckout, onExplor
                   src={item.product.image}
                   alt={item.product.name}
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src.includes('/src/assets/images/')) {
+                      target.src = target.src.replace('/src/assets/images/', '/images/').replace(/_\d+\.jpg$/, '.jpg');
+                    } else if (!target.src.includes('vintage_hero_cream.jpg')) {
+                      target.src = '/images/vintage_hero_cream.jpg';
+                    }
+                  }}
                   className="w-20 h-20 rounded-xl object-cover bg-[#F5EFE6] shrink-0"
                 />
                 <div className="flex-1 flex flex-col justify-between">

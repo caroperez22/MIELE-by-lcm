@@ -82,9 +82,15 @@ export const Hero: React.FC<HeroProps> = ({ onExploreCatalog, onSpinRoulette }) 
               <div className="relative rounded-2xl overflow-hidden bg-white shadow-xl border border-[#D6B779]/30">
                 <div className="aspect-4/3 relative overflow-hidden bg-[#F5EFE6]">
                   <img
-                    src="/src/assets/images/vintage_hero_cream_1794345712552.jpg"
+                    src="/images/vintage_hero_cream.jpg"
                     alt="Crema Corporal Vintage MIELE by lcm"
                     referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (!target.src.includes('vintage_hero_cream_1794345712552.jpg')) {
+                        target.src = '/images/vintage_hero_cream_1794345712552.jpg';
+                      }
+                    }}
                     className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute top-4 left-4 bg-[#FFF9F0]/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-[#D6B779]/40 text-xs font-semibold text-[#4B3529] flex items-center gap-1.5 shadow-xs">

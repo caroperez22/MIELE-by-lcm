@@ -256,6 +256,14 @@ export const Catalog: React.FC<CatalogProps> = ({
                       src={product.image}
                       alt={product.name}
                       referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (target.src.includes('/src/assets/images/')) {
+                          target.src = target.src.replace('/src/assets/images/', '/images/').replace(/_\d+\.jpg$/, '.jpg');
+                        } else if (!target.src.includes('vintage_hero_cream.jpg')) {
+                          target.src = '/images/vintage_hero_cream.jpg';
+                        }
+                      }}
                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                     />
 

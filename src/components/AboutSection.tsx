@@ -13,9 +13,15 @@ export const AboutSection: React.FC = () => {
             <div className="relative mx-auto max-w-md">
               <div className="rounded-3xl overflow-hidden shadow-xl border-2 border-[#D6B779]/40 aspect-4/3 bg-white">
                 <img
-                  src="/src/assets/images/vintage_rose_cream_1794345714503.jpg"
+                  src="/images/vintage_rose_cream.jpg"
                   alt="Cremas corporales vintage MIELE"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (!target.src.includes('vintage_rose_cream_1794345714503.jpg')) {
+                      target.src = '/images/vintage_rose_cream_1794345714503.jpg';
+                    }
+                  }}
                   className="w-full h-full object-cover"
                 />
               </div>

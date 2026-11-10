@@ -138,7 +138,20 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               {items.map(item => (
                 <div key={item.product.id} className="flex justify-between items-center text-xs text-[#4B3529]/80 bg-white/70 p-2 rounded-lg">
                   <div className="flex items-center gap-2">
-                    <img src={item.product.image} alt={item.product.name} referrerPolicy="no-referrer" className="w-8 h-8 rounded-md object-cover" />
+                    <img
+                      src={item.product.image}
+                      alt={item.product.name}
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (target.src.includes('/src/assets/images/')) {
+                          target.src = target.src.replace('/src/assets/images/', '/images/').replace(/_\d+\.jpg$/, '.jpg');
+                        } else if (!target.src.includes('vintage_hero_cream.jpg')) {
+                          target.src = '/images/vintage_hero_cream.jpg';
+                        }
+                      }}
+                      className="w-8 h-8 rounded-md object-cover"
+                    />
                     <div>
                       <p className="font-semibold text-[#4B3529] line-clamp-1">{item.product.name}</p>
                       <p className="text-[10px] text-[#4B3529]/60">{item.quantity} x {formatCOP(item.product.price)}</p>

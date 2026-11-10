@@ -13,6 +13,7 @@ const DATA_DIR = path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'store.json');
 
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 import { INITIAL_PRODUCTS, INITIAL_PRIZES } from './src/constants/initialData.js';
 

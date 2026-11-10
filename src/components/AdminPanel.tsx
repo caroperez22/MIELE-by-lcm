@@ -124,7 +124,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       ingredients: 'Miel Pura de Abejas, Manteca de Karité batida, Aceite de Almendras vírgenes, Vitamina E.',
       benefits: 'Nutrición de botica profunda y regeneración duradera.',
       scentNotes: 'Miel silvestre y vainilla antigua.',
-      image: '/src/assets/images/vintage_hero_cream_1794345712552.jpg',
+      image: '/images/vintage_hero_cream.jpg',
       featured: false,
     });
     setIsProductModalOpen(true);
@@ -507,7 +507,20 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                       .map(p => (
                         <div key={p.id} className="flex justify-between items-center p-2.5 bg-[#FFF9F0] rounded-xl border border-[#D6B779]/20 text-xs">
                           <div className="flex items-center gap-2">
-                            <img src={p.image} alt={p.name} className="w-9 h-9 rounded-lg object-cover" />
+                            <img
+                              src={p.image}
+                              alt={p.name}
+                              referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                const target = e.currentTarget;
+                                if (target.src.includes('/src/assets/images/')) {
+                                  target.src = target.src.replace('/src/assets/images/', '/images/').replace(/_\d+\.jpg$/, '.jpg');
+                                } else if (!target.src.includes('vintage_hero_cream.jpg')) {
+                                  target.src = '/images/vintage_hero_cream.jpg';
+                                }
+                              }}
+                              className="w-9 h-9 rounded-lg object-cover"
+                            />
                             <div>
                               <p className="font-bold text-[#4B3529]">{p.name}</p>
                               <p className="text-[10px] text-[#4B3529]/60">{formatCOP(p.price)}</p>
@@ -619,6 +632,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                                 <img
                                   src={product.image}
                                   alt={product.name}
+                                  referrerPolicy="no-referrer"
+                                  onError={(e) => {
+                                    const target = e.currentTarget;
+                                    if (target.src.includes('/src/assets/images/')) {
+                                      target.src = target.src.replace('/src/assets/images/', '/images/').replace(/_\d+\.jpg$/, '.jpg');
+                                    } else if (!target.src.includes('vintage_hero_cream.jpg')) {
+                                      target.src = '/images/vintage_hero_cream.jpg';
+                                    }
+                                  }}
                                   className="w-12 h-12 rounded-xl object-cover bg-[#F5EFE6] shrink-0"
                                 />
                                 <div>

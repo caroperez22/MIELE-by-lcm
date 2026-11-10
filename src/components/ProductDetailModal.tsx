@@ -61,6 +61,14 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               src={product.image}
               alt={product.name}
               referrerPolicy="no-referrer"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (target.src.includes('/src/assets/images/')) {
+                  target.src = target.src.replace('/src/assets/images/', '/images/').replace(/_\d+\.jpg$/, '.jpg');
+                } else if (!target.src.includes('vintage_hero_cream.jpg')) {
+                  target.src = '/images/vintage_hero_cream.jpg';
+                }
+              }}
               className="w-full h-full object-cover object-center"
             />
             <div className="absolute top-4 left-4">

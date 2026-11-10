@@ -70,7 +70,7 @@ export async function createProduct(productData: Partial<Product>): Promise<Prod
     price: productData.price || 48000,
     stock: productData.stock || 10,
     category: productData.category || 'Cremas Corporales Vintage',
-    image: productData.image || '/src/assets/images/vintage_hero_cream_1794345712552.jpg',
+    image: productData.image || '/images/vintage_hero_cream.jpg',
     size: productData.size || '250 ml / Tarro Cerámica',
     ingredients: productData.ingredients || 'Manteca de Karité, Miel Pura.',
     benefits: productData.benefits || 'Nutrición profunda.',
@@ -172,7 +172,7 @@ export async function placeOrder(payload: PlaceOrderPayload): Promise<Order> {
     return {
       productId: it.productId,
       productName: prod?.name || 'Crema Corporal Vintage MIELE',
-      productImage: prod?.image || '/src/assets/images/vintage_hero_cream_1794345712552.jpg',
+      productImage: prod?.image || '/images/vintage_hero_cream.jpg',
       quantity: it.quantity,
       unitPrice: price,
       subtotal: price * it.quantity,
